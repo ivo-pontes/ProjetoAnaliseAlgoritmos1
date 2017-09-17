@@ -2,7 +2,7 @@
 all: functions
 functions: functions.o main.o
 # O compilador faz a ligação entre os dois objetos
-	gcc -o utilizandoMakefile functions.o main.o
+	gcc -o paa functions.o main.o
 #-----> Distancia com o botão TAB ### e não com espaços
 functions.o: functions.c
 	gcc -o functions.o -c functions.c -W -Wall -pedantic -Wno-implicit

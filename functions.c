@@ -1,6 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "functions.h"
+
+void menu()
+{
+  int op = -1;
+
+	do
+	{
+		printf("------------------MENU----------------------\n");
+		printf("1 = Criar Todos os arquivos txt (100-1000000)\n");
+		printf("2 = Opção 2\n");
+		printf("0 = sair\n");
+		printf("---------------------------------------------\n");
+		scanf("%d", &op);
+		printf("\n");
+
+		switch (op)
+		{
+			case 1:
+					createAllFiles();
+			break;
+			case 2:
+					printf("Opção 2.\n");
+			break;
+			default:
+			break;
+		}
+	} while(op != 0);
+}
+
+void createAllFiles()
+{
+  createFiles(100);
+  createFiles(1000);
+  createFiles(10000);
+  createFiles(50000);
+  createFiles(100000);
+  createFiles(1000000);
+  printf("Arquivos criados.\n");
+}
+
+void createFiles(n)
+{
+  char filename[MAX_STR];
+  snprintf(filename, MAX_STR, "%d", n);
+  strcat(filename,".txt");
+
+  FILE * f;
+  f = fopen (filename,"a+");
+  if (f != NULL)
+  {
+    for (int i = 0; i < n; i++)
+    {
+      fprintf(f, "%d ",i+1);
+    }
+
+    fclose (f);
+  }
+}
 
 /*
   Função: printMakefile()
