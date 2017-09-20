@@ -12,5 +12,9 @@ char * getStringN(int);
 void createAllFiles();
 void createFiles(int);
 void menu();
+void printArray(int *, int );
+void bubbleSort(int *,int );
+void openFiles(int *,int );
+void callBubbleSort();
 
 #endif

@@ -11,7 +11,8 @@ void menu()
 	{
 		printf("------------------MENU----------------------\n");
 		printf("1 = Criar Todos os arquivos txt (100-1000000)\n");
-		printf("2 = Opção 2\n");
+    printf("2 = Algoritmo bubbleSort                     \n");
+		printf("# = Opção #\n");
 		printf("0 = sair\n");
 		printf("---------------------------------------------\n");
 		scanf("%d", &op);
@@ -23,9 +24,10 @@ void menu()
 					createAllFiles();
 			break;
 			case 2:
-					printf("Opção 2.\n");
+          callBubbleSort();
 			break;
 			default:
+          op = 0;
 			break;
 		}
 	} while(op != 0);
@@ -44,6 +46,8 @@ void createAllFiles()
 
 void createFiles(n)
 {
+  int i;
+  srand(time(NULL));   
   char filename[MAX_STR];
   snprintf(filename, MAX_STR, "%d", n);
   strcat(filename,".txt");
@@ -52,14 +56,119 @@ void createFiles(n)
   f = fopen (filename,"a+");
   if (f != NULL)
   {
-    for (int i = 0; i < n; i++)
+    for (i = 0; i < n; i++)
     {
       fprintf(f, "%d ",i+1);
     }
 
     fclose (f);
   }
+
+
+  snprintf(filename, MAX_STR, "%d",n);
+  strcat(filename,"-shuffle.txt");
+
+  FILE * fs;
+  fs = fopen (filename,"w+");
+  if (fs != NULL)
+  {
+    for (i = 0; i < n; i++)
+    {
+      fprintf(fs, "%d ",rand() % 101);
+    }
+
+    fclose (fs);
+  } 
+
+  snprintf(filename, MAX_STR, "%d",n);
+  strcat(filename,"-reverse.txt");
+
+  FILE * fr;
+  fr = fopen (filename,"w+");
+  if (fs != NULL)
+  {
+    for (i = n; i > 0; i--)
+    {
+      fprintf(fr, "%d ",i);
+    }
+
+    fclose (fr);
+  } 
+
 }
+
+void callBubbleSort()
+{
+  int v100[100];
+  //v100 = malloc(100 * sizeof(int));
+
+  openFiles(v100, 100);
+  bubbleSort(v100, 100);
+  printArray(v100, 100);
+
+
+}
+
+void openFiles(int *array,int length )
+{
+  int i = 0, j = 0;
+  FILE *fp;
+  char aux[30], c;     
+  char filename[100];
+
+  snprintf(filename, 100, "%d",length);
+  strcat(filename,"-shuffle.txt");
+
+  fp = fopen(filename, "r");
+
+  while(!feof(fp))
+  {
+    c = fgetc(fp);
+
+    if ( c != ' ' && c != EOF)
+    {
+      aux[j] = c;
+      j++;
+    }else
+    {
+      aux[j] = '\0';
+      j = 0;
+      array[i] = atoi(aux);
+      i++;
+    }
+  }
+
+  fclose(fp);
+}
+
+void bubbleSort(int *array,int length )
+{
+   int i, j, aux;   
+   for( i = 0; i < length-1;  i++ )
+      for( j= i+1; j < length ; j++ )  
+         if( array[i] > array[j] )  
+         {          
+            aux = array[i];
+            array[i] = array[j];
+            array[j] = aux;
+         }
+
+}
+
+
+void printArray(int *array, int length)
+{
+  int i;
+  printf("\nImprimindo vetor de %d posições.\n\n", length);
+
+  for (i = 0; i < length; i++)
+  {
+    printf("%d ", array[i]);
+  }
+
+  printf("\n\n");
+}
+
 
 /*
   Função: printMakefile()
