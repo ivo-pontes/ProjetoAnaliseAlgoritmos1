@@ -16,6 +16,7 @@ void menu()
     printf("3 = Algoritmo InsertionSort                  \n");
     printf("4 = Algoritmo MergeSortSort                  \n");
     printf("5 = Algoritmo QuickSort                      \n");
+    printf("6 = Imprimir Gráficos                        \n");
 		printf("0 = sair\n");
 		printf("---------------------------------------------\n");
 		scanf("%d", &op);
@@ -61,7 +62,12 @@ void menu()
           sort(200000,5);
           sort(500000,5);
           sort(1000000,5);
-      break;                    
+      break; 
+      case 6:
+          system("gnuplot4-x11 -p scripts/inorder.gp ");
+          system("gnuplot4-x11 -p scripts/shuffle.gp ");
+          system("gnuplot4-x11 -p scripts/reverse.gp ");
+      break;                     
 			default:
           op = 0;
 			break;
