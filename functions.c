@@ -32,7 +32,8 @@ void menu()
           sort(10000,2);
           sort(100000,2);
           sort(200000,2);
-          //sort(1000000, 2);
+          sort(500000,2);
+          sort(1000000, 2);
 			break;
       case 3:
           sort(100,3);
@@ -40,7 +41,8 @@ void menu()
           sort(10000,3);
           sort(100000,3);
           sort(200000,3);
-          //sort(500000,3);
+          sort(500000,3);
+          sort(1000000,3);
       break;  
       case 4:
           sort(100,4);
@@ -49,6 +51,7 @@ void menu()
           sort(100000,4);
           sort(200000,4);
           sort(500000,4);
+          sort(1000000,4);
       break;  
       case 5:
           sort(100,5);
@@ -57,6 +60,7 @@ void menu()
           sort(100000,5);
           sort(200000,5);
           sort(500000,5);
+          sort(1000000,5);
       break;                    
 			default:
           op = 0;
@@ -152,13 +156,14 @@ void sort(long int length, long int metodo)
           bubbleSort(v100, length);
       break;
       case 3:
+          //printf("Insertion Sort.\n");
           insertionSort(v100, length);
       break;  
       case 4:
           mergeSort(v100, 0, length-1);
       break;  
       case 5:
-          quickSort(v100, 0, length-1);
+          quickSort(v100, length-1);
       break;             
       default:
       break;
@@ -182,6 +187,7 @@ void openFiles(long int *array,long int length )
   char filename[100];
 
   snprintf(filename, 100, "%ld",length);
+  //strcat(filename,"-shuffle.txt");
   strcat(filename,"-shuffle.txt");
 
   fp = fopen(filename, "r");
@@ -222,20 +228,25 @@ void bubbleSort(long int *array,long int length )
 
 void insertionSort(long int *array, long int length )
 {
-  if(length > 0)
+  long int aux;
+  long int i;
+  long int j;
+
+  for(j = 1; j < length; j++)
   {
-    insertionSort(array, length-1);
-    long int aux = array[length];
-    long int i = length-1;
+    aux = array[j];
+    i = j-1;
 
     while( i >= 0 && array[i] > aux)
     {
       array[i+1] = array[i];
-      i = i-1;
+      i--;
     }
 
     array[i+1] = aux;
   }
+
+
 }
 
 void mergeSort(long int *array,long int start,long int end ) 
@@ -301,49 +312,28 @@ void mergeSort(long int *array,long int start,long int end )
    free(aux);
 }
 
-long int partition(long int *array,long int start,long int end )
+void quickSort(long int *array, long int length) 
 {
-  long int x,i,j,aux;
-  x = array[start];
-  i = start - 1;
-  j = end + 1;
-   
-  while(1)
+  long int i, j, aux;
+
+  for (i = 1 ;i < length;i++) 
   {
-    do
-    { 
-      j--; 
-    } while( array[j]>x );
-    
-    do 
-    { 
-      i++; 
-    } while( array[i]<x );
-    
-    if (i<j) 
+    j = i;
+ 
+    while (array[j] < array[j-1]) 
     {
-       aux = array[i];
-       array[i] = array[j];
-       array[j] = aux;
-    }
-    else
-    {
-       return j;
+      aux = array[j];
+      array[j]   = array[j-1];
+      array[j-1] = aux;
+      j--;
+    
+      if (j == 0) 
+       break;  
     }
   }
 }
 
 
-void quickSort(long int *array,long int start,long int end )
-{
-   long int pivot;
-   if (start < end) 
-   {
-      pivot = partition( array, start, end);
-      quickSort( array, start, pivot);
-      quickSort(array, pivot+1, end);
-   }
-}
 
 
 
