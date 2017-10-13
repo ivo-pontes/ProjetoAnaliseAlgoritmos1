@@ -7,146 +7,99 @@
 void menu()
 {
   int op = -1;
+  int order = 0; 
 
-	do
-	{
-		printf("------------------MENU----------------------\n");
-		printf("1 = Criar Todos os arquivos txt (100-1000000)\n");
-    printf("2 = Algoritmo bubbleSort                     \n");
-    printf("3 = Algoritmo InsertionSort                  \n");
-    printf("4 = Algoritmo MergeSortSort                  \n");
-    printf("5 = Algoritmo QuickSort                      \n");
-    printf("6 = Imprimir Gráficos                        \n");
-		printf("0 = sair\n");
-		printf("---------------------------------------------\n");
-		scanf("%d", &op);
-		printf("\n");
 
-		switch (op)
-		{
-			case 1:
-					createAllFiles();
-			break;
-			case 2:
-          sort(100,2);
-          sort(1000,2);
-          sort(10000,2);
-          sort(100000,2);
-          sort(200000,2);
-          sort(500000,2);
-          sort(1000000, 2);
-			break;
-      case 3:
-          sort(100,3);
-          sort(1000,3);
-          sort(10000,3);
-          sort(100000,3);
-          sort(200000,3);
-          sort(500000,3);
-          sort(1000000,3);
-      break;  
-      case 4:
-          sort(100,4);
-          sort(1000,4);
-          sort(10000,4);
-          sort(100000,4);
-          sort(200000,4);
-          sort(500000,4);
-          sort(1000000,4);
-      break;  
-      case 5:
-          sort(100,5);
-          sort(1000,5);
-          sort(10000,5);
-          sort(100000,5);
-          sort(200000,5);
-          sort(500000,5);
-          sort(1000000,5);
-      break; 
-      case 6:
-          system("gnuplot4-x11 -p scripts/inorder.gp ");
-          system("gnuplot4-x11 -p scripts/shuffle.gp ");
-          system("gnuplot4-x11 -p scripts/reverse.gp ");
-      break;                     
-			default:
-          op = 0;
-			break;
-		}
-	} while(op != 0);
-}
+  printf("Digite o tipo de Ordenação: 0-Crescente | 1-Randômica | 2-Decrescente\n");
+  scanf("%d",&order);
 
-void createAllFiles()
-{
-  createFiles(100);
-  createFiles(1000);
-  createFiles(10000);
-  createFiles(50000);
-  createFiles(100000);
-  createFiles(200000);
-  createFiles(500000);
-  createFiles(1000000);
-  printf("Arquivos criados.\n");
-}
+  printf("\n------------------MENU----------------------\n");
+  //printf("1 = Criar Todos os arquivos txt (100-1000000)\n");
+  printf("1 = Algoritmo bubbleSort                     \n");
+  printf("2 = Algoritmo InsertionSort                  \n");
+  printf("3 = Algoritmo MergeSortSort                  \n");
+  printf("4 = Algoritmo QuickSort                      \n");
+  printf("5 = Imprimir Gráficos                        \n");
+  //printf("7 = Criar Todos os arquivos txt (100-1000000)\n");
+  printf("0 = sair\n");
+  printf("---------------------------------------------\n");
+  scanf("%d", &op);
+  printf("\n");
 
-void createFiles(long int n)
-{
-  long int i;
-  srand(time(NULL));   
-  char filename[MAX_STR];
-  snprintf(filename, MAX_STR, "%ld", n);
-  strcat(filename,".txt");
 
-  FILE * f;
-  f = fopen (filename,"w+");
-  if (f != NULL)
+
+  switch (op)
   {
-    for (i = 0; i < n; i++)
-    {
-      fprintf(f, "%ld ",i+1);
-    }
-
-    fclose (f);
+  	case 1:
+        emptyFiles(1,order);
+        sort(100,1,order);
+        sort(1000,1,order);
+        sort(10000,1,order);
+        sort(100000,1,order);
+        sort(200000,1,order);
+        sort(500000,1,order);
+        sort(1000000,1,order);
+  	break;
+    case 2:
+        emptyFiles(2,order);
+        sort(100,2,order);
+        sort(1000,2,order);
+        sort(10000,2,order);
+        sort(100000,2,order);
+        sort(200000,2,order);
+        sort(500000,2,order);
+        sort(1000000,2,order);
+    break;  
+    case 3:
+        emptyFiles(3,order);
+        sort(100,3,order);
+        sort(1000,3,order);
+        sort(10000,3,order);
+        sort(100000,3,order);
+        sort(200000,3,order);
+        sort(500000,3,order);
+        sort(1000000,3,order);
+    break;  
+    case 4:
+        emptyFiles(4,order);
+        sort(100,4,order);
+        sort(1000,4,order);
+        sort(10000,4,order);
+        sort(100000,4,order);
+        sort(200000,4,order);
+        sort(500000,4,order);
+        sort(1000000,4,order);
+    break; 
+    case 5:
+        system("gnuplot4-x11 -p scripts/ascending.gp ");
+        system("gnuplot4-x11 -p scripts/random.gp ");
+        system("gnuplot4-x11 -p scripts/decreasing.gp ");
+    break;     
+    case 6:
+        //createAllFiles();
+    break;                
+  	default:
+        op = 0;
+  	break;
   }
 
-
-  snprintf(filename, MAX_STR, "%ld",n);
-  strcat(filename,"-shuffle.txt");
-
-  FILE * fs;
-  fs = fopen (filename,"w+");
-  if (fs != NULL)
-  {
-    for (i = 0; i < n; i++)
-    {
-      fprintf(fs, "%ld ",rand() % (n+1));
-    }
-
-    fclose (fs);
-  } 
-
-  snprintf(filename, MAX_STR, "%ld",n);
-  strcat(filename,"-reverse.txt");
-
-  FILE * fr;
-  fr = fopen (filename,"w+");
-  if (fs != NULL)
-  {
-    for (i = n; i > 0; i--)
-    {
-      fprintf(fr, "%ld ",i);
-    }
-
-    fclose (fr);
-  } 
-
 }
 
-void sort(long int length, long int metodo)
+
+void sort(long int length, long int metodo, int ordem)
 {
   long int v100[length];
-  //v100 = malloc(100 * sizeof(int));
+  long int compSwap[2]; //Posição 0 - n de comparações, 1 - n de trocas
+  char tipoOrdem[100];
 
-  openFiles(v100, length);
+  if(ordem == 2)
+    strcpy(tipoOrdem,"Decrescente");
+  else if(ordem == 1)
+    strcpy(tipoOrdem,"Randômica");
+  else
+    strcpy(tipoOrdem,"Crescente");
+
+  openFiles(v100, length, ordem);
 
   clock_t start, end;
   double cpu_time_used;
@@ -156,20 +109,18 @@ void sort(long int length, long int metodo)
     switch (metodo)
     {
       case 1:
-          createAllFiles();
+          bubbleSort(v100, length, compSwap);
       break;
       case 2:
-          bubbleSort(v100, length);
-      break;
+          insertionSort(v100, length, compSwap);
+      break;  
       case 3:
-          //printf("Insertion Sort.\n");
-          insertionSort(v100, length);
+          compSwap[0] = 0;
+          compSwap[1] = 0;
+          mergeSort(v100, 0, length-1, compSwap);
       break;  
       case 4:
-          mergeSort(v100, 0, length-1);
-      break;  
-      case 5:
-          quickSort(v100, length-1);
+          quickSort(v100, length-1, compSwap);
       break;             
       default:
       break;
@@ -178,23 +129,183 @@ void sort(long int length, long int metodo)
   end = clock();
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
-  printf("Tempo de uso do CPU, com %ld posições: %.2f.\n", length, cpu_time_used);
-  
+  printf("CPU Time, com %ld posições(%s): %.2f.\n", length, tipoOrdem, cpu_time_used);
+  printf("Comparações: %ld.\nTrocas: %ld.\n", compSwap[0], compSwap[1]); 
+  createDataReport(length,metodo, ordem, cpu_time_used , compSwap);
   //  printArray(v100, length);
 }
 
 
 
-void openFiles(long int *array,long int length )
+void bubbleSort(long int *array,long int length,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  long int i, j, aux;   
+  for( i = 0; i < length-1;  i++ )
+    for( j= i+1; j < length ; j++ )  
+    {
+      compSwap[0]++;
+      if( array[i] > array[j] )  
+      {          
+        aux = array[i];
+        array[i] = array[j];
+        array[j] = aux;
+
+        compSwap[1]++;
+      }
+    }
+
+}
+
+
+void insertionSort(long int *array, long int length ,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  long int i, j, aux;
+
+  for(j = 1; j < length; j++)
+  {
+    aux = array[j];
+    i = j-1;
+    
+    while( i >= 0 && array[i] > aux)
+    {
+      array[i+1] = array[i];
+      i--;
+      compSwap[0]++;
+      compSwap[1]++;
+    }
+
+    array[i+1] = aux;
+  }
+}
+
+void mergeSort(long int *array,long int start,long int end, long int *compSwap)
+{
+  long int i,j,k,half,*aux;
+  
+
+  if ( start == end ) 
+    return;
+   
+   // ordenacao recursiva das duas metades
+   half = ( start+end )/2;
+   mergeSort( array, start, half, compSwap);
+   mergeSort( array, half+1,end, compSwap);
+
+   i = start;
+   j = half+1;
+   k = 0;
+   aux = (long int *) malloc(sizeof(long int) * (end-start+1));
+   
+   while( i<half+1 || j<end+1 )
+   { 
+      compSwap[0]++;
+
+      if ( i == half+1 )
+      { 
+         aux[k] = array[j];
+         j++;
+         k++;
+         compSwap[1]++;
+      } 
+      else
+      {
+        if (j==end+1) 
+        { 
+          aux[k] = array[i];
+          i++;
+        } 
+        else 
+        {
+          if (array[i] < array[j]) 
+          { 
+             aux[k] = array[i];
+             i++;
+          } 
+          else
+          { 
+            aux[k] = array[j];
+            j++;
+          }
+          compSwap[0]++;
+        }
+
+        k++;
+        compSwap[0]++;
+        compSwap[1]++;
+      }
+      
+      compSwap[0]++;
+   }
+
+   // copia vetor intercalado para o vetor original
+   for( i=start; i<=end; i++ )
+   {
+      compSwap[1]++;
+
+      array[i] = aux[i-start];
+   }
+   free(aux);
+}
+
+void quickSort(long int *array, long int length,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  long int i, j, aux;
+
+  for (i = 1 ;i < length;i++) 
+  {
+    j = i;
+ 
+    while (array[j] < array[j-1]) 
+    {
+      compSwap[0]++;
+      compSwap[1]++;
+      aux = array[j];
+      array[j]   = array[j-1];
+      array[j-1] = aux;
+      j--;
+    
+      if (j == 0) 
+       break;  
+    }
+  }
+}
+
+
+void openFiles(long int *array,long int length, int orderType)
 {
   long int i = 0, j = 0;
   FILE *fp;
   char aux[30], c;     
   char filename[100];
+  char order[100];
 
-  snprintf(filename, 100, "%ld",length);
-  //strcat(filename,"-shuffle.txt");
-  strcat(filename,"-shuffle.txt");
+  if(orderType == 2)
+    strcpy(order,"-decreasing.txt");
+  else if(orderType == 1)
+    strcpy(order,"-random.txt");
+  else
+    strcpy(order,"-ascending.txt");
+
+  char strSize[100];
+  char cwd[1024];
+  getcwd(cwd, sizeof(cwd));
+  strcpy(filename, cwd);  
+  strcat(filename,"/files/");
+  
+  snprintf(strSize, 100, "%ld",length);
+  strcat(filename,strSize);
+  strcat(filename,order);
+
+  printf("%s.\n",filename);
 
   fp = fopen(filename, "r");
 
@@ -218,132 +329,6 @@ void openFiles(long int *array,long int length )
   fclose(fp);
 }
 
-void bubbleSort(long int *array,long int length )
-{
-   long int i, j, aux;   
-   for( i = 0; i < length-1;  i++ )
-      for( j= i+1; j < length ; j++ )  
-         if( array[i] > array[j] )  
-         {          
-            aux = array[i];
-            array[i] = array[j];
-            array[j] = aux;
-         }
-}
-
-
-void insertionSort(long int *array, long int length )
-{
-  long int aux;
-  long int i;
-  long int j;
-
-  for(j = 1; j < length; j++)
-  {
-    aux = array[j];
-    i = j-1;
-
-    while( i >= 0 && array[i] > aux)
-    {
-      array[i+1] = array[i];
-      i--;
-    }
-
-    array[i+1] = aux;
-  }
-
-
-}
-
-void mergeSort(long int *array,long int start,long int end ) 
-{
-  long int i,j,k,half,*aux;
-  
-  if ( start == end ) 
-    return;
-   
-   // ordenacao recursiva das duas metades
-   half = ( start+end )/2;
-   mergeSort( array, start, half);
-   mergeSort( array, half+1,end );
-
-   // intercalacao no vetor temporario t
-   i = start;
-   j = half+1;
-   k = 0;
-   aux = (long int *) malloc(sizeof(long int) * (end-start+1));
-   
-   while( i<half+1 || j<end+1 )
-   { 
-      if ( i == half+1 )
-      { // i passou do final da primeira metade, pegar v[j]
-         aux[k] = array[j];
-         j++;
-         k++;
-      } 
-      else
-      {
-         if (j==end+1) 
-         { 
-            // j passou do final da segunda metade, pegar v[i]
-            aux[k] = array[i];
-            i++;
-            k++;
-         } 
-         else 
-         {
-            if (array[i] < array[j]) 
-            { // v[i]<v[j], pegar v[i]
-               aux[k] = array[i];
-               i++;
-               k++;
-            } 
-            else
-            { // v[j]<=v[i], pegar v[j]
-              aux[k] = array[j];
-              j++;
-              k++;
-            }
-         }
-      }
-      
-      
-
-   }
-   // copia vetor intercalado para o vetor original
-   for( i=start; i<=end; i++ )
-   {
-      array[i] = aux[i-start];
-   }
-   free(aux);
-}
-
-void quickSort(long int *array, long int length) 
-{
-  long int i, j, aux;
-
-  for (i = 1 ;i < length;i++) 
-  {
-    j = i;
- 
-    while (array[j] < array[j-1]) 
-    {
-      aux = array[j];
-      array[j]   = array[j-1];
-      array[j-1] = aux;
-      j--;
-    
-      if (j == 0) 
-       break;  
-    }
-  }
-}
-
-
-
-
-
-
 void printArray(long int *array, long int length)
 {
   long int i;
@@ -354,6 +339,201 @@ void printArray(long int *array, long int length)
 
   printf("\n\n");
 }
+
+
+void createAllFiles()
+{
+  createFiles(100);
+  createFiles(1000);
+  createFiles(10000);
+  createFiles(50000);
+  createFiles(100000);
+  createFiles(200000);
+  createFiles(500000);
+  createFiles(1000000);
+  printf("Arquivos criados.\n");
+}
+
+void emptyFiles(long int method, int order)
+{
+  srand(time(NULL));
+  char filename[2014];   
+  char cwd[1024];
+  getcwd(cwd, sizeof(cwd));
+  strcpy(filename, cwd);
+  char orderType[100]; 
+  char orderMethod[100];
+
+  if(order == 2)
+    strcpy(orderType, "/data/decreasing/");
+  else if(order == 1)
+    strcpy(orderType, "/data/random/");
+  else
+    strcpy(orderType, "/data/ascending/");
+
+  if(method == 1)
+    strcpy(orderMethod, "bubbleSort");
+  else if(method == 2)
+    strcpy(orderMethod, "insertionSort");
+  else if(method == 3)
+    strcpy(orderMethod, "mergeSort");
+  else if(method== 4)
+    strcpy(orderMethod, "quickSort");      
+  else
+    strcpy(orderMethod, "bubbleSort");
+
+  strcat(filename,orderType);
+  strcat(filename,orderMethod);
+  strcat(filename, ".dat");
+  printf("%s.\n",filename);
+  FILE * f;
+  f = fopen (filename,"w+");
+  if (f != NULL)
+  {
+    fprintf(f, "\"%s\"\n",orderMethod);
+    fclose (f);
+  }
+
+  if(order == 2)
+    strcpy(orderType, "/data/");
+  else if(order == 1)
+    strcpy(orderType, "/data/");
+  else
+    strcpy(orderType, "/data/");
+
+  strcpy(filename, cwd);
+  strcat(filename, orderType);
+  strcat(filename, orderMethod);
+  strcat(filename, ".dat");
+
+  FILE * fx;
+  fx = fopen (filename,"ab+");
+  if (fx != NULL)
+  {
+    fprintf(fx, "Comparações\t Trocas\n");
+    fclose (fx);
+  } 
+
+}
+
+
+void createDataReport(long int length,long int method, int order, double cpu_time, long int *compSwap)
+{
+  srand(time(NULL));
+  char filename[2014];   
+  char cwd[1024];
+  getcwd(cwd, sizeof(cwd));
+  strcpy(filename, cwd);
+  char orderType[100]; 
+  char orderMethod[100];
+
+  if(order == 2)
+    strcpy(orderType, "/data/decreasing/");
+  else if(order == 1)
+    strcpy(orderType, "/data/random/");
+  else
+    strcpy(orderType, "/data/ascending/");
+
+  if(method == 1)
+    strcpy(orderMethod, "bubbleSort");
+  else if(method == 2)
+    strcpy(orderMethod, "insertionSort");
+  else if(method == 3)
+    strcpy(orderMethod, "mergeSort");
+  else if(method== 4)
+    strcpy(orderMethod, "quickSort");      
+  else
+    strcpy(orderMethod, "bubbleSort");
+
+  strcat(filename,orderType);
+  strcat(filename,orderMethod);
+  strcat(filename, ".dat");
+  printf("%s.\n",filename);
+  FILE * f;
+  f = fopen (filename,"ab+");
+  if (f != NULL)
+  {
+    fprintf(f, "%ld %.2f\n",length, cpu_time);
+    fclose (f);
+  }
+
+  if(order == 2)
+    strcpy(orderType, "/data/");
+  else if(order == 1)
+    strcpy(orderType, "/data/");
+  else
+    strcpy(orderType, "/data/");
+
+  strcpy(filename, cwd);
+  strcat(filename, orderType);
+  strcat(filename, orderMethod);
+  strcat(filename, ".dat");
+
+  FILE * fx;
+  fx = fopen (filename,"ab+");
+  if (fx != NULL)
+  {
+    fprintf(fx, "%ld %ld\n",compSwap[0], compSwap[1]);
+    fclose (fx);
+  }
+
+}
+
+void createFiles(long int n)
+{
+  long int i;
+  srand(time(NULL));   
+  char filename[MAX_STR];
+  snprintf(filename, MAX_STR, "%ld", n);
+  strcat(filename,"-ascending.txt");
+
+  FILE * f;
+  f = fopen (filename,"w+");
+  if (f != NULL)
+  {
+    for (i = 0; i < n; i++)
+    {
+      fprintf(f, "%ld ",i+1);
+    }
+
+    fclose (f);
+  }
+
+
+  snprintf(filename, MAX_STR, "%ld",n);
+  strcat(filename,"-random.txt");
+
+  FILE * fs;
+  fs = fopen (filename,"w+");
+  if (fs != NULL)
+  {
+    for (i = 0; i < n; i++)
+    {
+      fprintf(fs, "%ld ",rand() % (n+1));
+    }
+
+    fclose (fs);
+  } 
+
+  snprintf(filename, MAX_STR, "%ld",n);
+  strcat(filename,"-decreasing.txt");
+
+  FILE * fr;
+  fr = fopen (filename,"w+");
+  if (fs != NULL)
+  {
+    for (i = n; i > 0; i--)
+    {
+      fprintf(fr, "%ld ",i);
+    }
+
+    fclose (fr);
+  } 
+
+}
+
+
+
 
 
 /*
