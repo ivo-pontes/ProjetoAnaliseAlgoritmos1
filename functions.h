@@ -2,6 +2,14 @@
 #define _H_FUNCTIONS
 
 #define MAX_STR 100
+#define MAX_IMG 200000
+
+typedef struct
+{
+	long int id;
+	long int size;
+	char *data;
+} Img;
 
 //Funções de Teste
 void printMakeFile();
@@ -25,5 +33,9 @@ void bubbleSort(long int *,long int, long int *);
 void insertionSort(long int *, long int, long int * );
 void mergeSort( long int *,long int, long int, long int * );
 void quickSort( long int *, long int, long int * );
+
+//Abrir Vetor com Imagens
+void openImages();
+void imgBubbleSort(Img *, int, long int *);
 
 #endif
