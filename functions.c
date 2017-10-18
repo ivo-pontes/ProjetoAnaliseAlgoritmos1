@@ -77,6 +77,7 @@ void menu()
     break;     
     case 6:
         //createAllFiles();
+        openImages();
     break;                
   	default:
         op = 0;
@@ -135,7 +136,150 @@ void sort(long int length, long int metodo, int ordem)
   //  printArray(v100, length);
 }
 
+void openImages()
+{
+  Img vetor[MAX_IMG];
+  int i;  
+  FILE *fp;
+  char *imgBuffer1 = 0;
+  char *imgBuffer2 = 0;
+  long int length1 = 0;
+  long int length2 = 0;
 
+  fp = fopen("BoatAT.png", "r");
+
+  if(fp == NULL)
+  {
+    printf("Erro ao abrir o arquivo.\n");
+  }else
+  {
+    fseek (fp, 0, SEEK_END);
+    length1 = ftell (fp);
+    fseek (fp, 0, SEEK_SET);
+    imgBuffer1 = malloc (length1);
+    if (imgBuffer1)
+    {
+      fread (imgBuffer1, 1, length1, fp);
+    }
+  }
+
+  fclose(fp);
+
+  fp = fopen("TheLichAT.png", "r");
+
+  if(fp == NULL)
+  {
+    printf("Erro ao abrir o arquivo.\n");
+  }else
+  {
+    fseek (fp, 0, SEEK_END);
+    length2 = ftell (fp);
+    fseek (fp, 0, SEEK_SET);
+    imgBuffer2 = malloc (length2);
+    if (imgBuffer2)
+    {
+      fread (imgBuffer2, 1, length2, fp);
+    }
+  }
+
+  fclose(fp);
+
+  /*
+    Ordem Crescente
+  */
+  for(i = 0; i < MAX_IMG ; i++)
+  {
+    if(i%2 == 0)
+    {
+      vetor[i].data = malloc(length1);
+      vetor[i].data = imgBuffer1;
+      vetor[i].size = length1;
+    }else
+    {
+      vetor[i].data = malloc(length2);
+      vetor[i].data = imgBuffer2;
+      vetor[i].size = length2;
+    }
+
+    vetor[i].id = i;
+    //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
+  }
+
+
+
+
+
+  /*
+    Ordem Decrescente
+  */
+  int j = 0;
+  for(i = MAX_IMG-1; i >= 0 ; i--)
+  {
+    vetor[j].id = i;
+    j++;
+    //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
+  }
+
+  int ordem = 2;
+  char tipoOrdem[100];
+
+  if(ordem == 2)
+    strcpy(tipoOrdem,"Decrescente");
+  else if(ordem == 1)
+    strcpy(tipoOrdem,"Randômica");
+  else
+    strcpy(tipoOrdem,"Crescente");
+
+
+
+  long int compSwap[2]; //Posição 0 - n de comparações, 1 - n de trocas
+
+  clock_t start, end;
+  double cpu_time_used;
+
+  start = clock();
+  imgBubbleSort(vetor, MAX_IMG, compSwap);
+  end = clock();
+  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+  printf("CPU Time, com %d posições(%s): %.2f.\n", MAX_IMG, tipoOrdem, cpu_time_used);
+  printf("Comparações: %ld.\nTrocas: %ld.\n", compSwap[0], compSwap[1]); 
+
+/*  bubbleSort();
+  bubbleSort();
+  bubbleSort();
+*/
+
+
+}
+
+/*
+void imgSort()
+{
+
+}
+*/
+void imgBubbleSort(Img *array,int length,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  Img aux;
+  long int i, j;
+
+  for( i = 0; i < length-1;  i++ )
+    for( j= i+1; j < length ; j++ )  
+    {
+      compSwap[0]++;
+      if( array[i].id > array[j].id )  
+      {          
+        aux = array[i];
+        array[i] = array[j];
+        array[j] = aux;
+        compSwap[1]++;
+      }
+    }
+}
 
 void bubbleSort(long int *array,long int length,long int *compSwap)
 {
