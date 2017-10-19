@@ -33,6 +33,7 @@ void bubbleSort(long int *,long int, long int *);
 void insertionSort(long int *, long int, long int * );
 void mergeSort( long int *,long int, long int, long int * );
 void quickSort( long int *, long int, long int * );
+void selectionSort(long int *,long int,long int *);
 
 //Abrir Vetor com Imagens
 void openImages(int, int);
@@ -40,6 +41,7 @@ void imgBubbleSort(Img *, int, long int *);
 void imgInsertionSort(Img *, int, long int *);
 void imgMergeSort( Img *, int, int, long int * );
 void imgQuickSort(Img *, int, long int *);
+void imgSelectionSort(Img *,int,long int *);
 void imgSort(int, int , int, char *, char *,long int *);
 
 #endif

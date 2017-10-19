@@ -18,7 +18,8 @@ void menu()
   printf("2 = Algoritmo InsertionSort                  \n");
   printf("3 = Algoritmo MergeSortSort                  \n");
   printf("4 = Algoritmo QuickSort                      \n");
-  printf("5 = Imprimir Gráficos                        \n");
+  printf("5 = Algoritmo SelectionSort                  \n");
+  printf("6 = Imprimir Gráficos                        \n");
   //printf("7 = Criar Todos os arquivos txt (100-1000000)\n");
   printf("0 = sair\n");
   printf("---------------------------------------------\n");
@@ -70,17 +71,28 @@ void menu()
         sort(1000000,4,order);
     break; 
     case 5:
+        emptyFiles(5,order);
+        sort(100,5,order);
+        sort(1000,5,order);
+        sort(10000,5,order);
+        sort(100000,5,order);
+        sort(200000,5,order);
+        sort(500000,5,order);
+        sort(1000000,5,order);
+    break;
+    case 6:
         system("gnuplot4-x11 -p scripts/ascending.gp ");
         system("gnuplot4-x11 -p scripts/random.gp ");
         system("gnuplot4-x11 -p scripts/decreasing.gp ");
-    break;     
-    case 6:
+    break;
+    case 7:
         //createAllFiles();
         //openImages(1, order);//Método e Ordem
         //openImages(2, order);
         //openImages(3, order);
-        openImages(4, order);
-    break;                
+        //openImages(4, order);
+        openImages(5, order);
+    break;                     
   	default:
         op = 0;
   	break;
@@ -123,8 +135,11 @@ void sort(long int length, long int metodo, int ordem)
           mergeSort(v100, 0, length-1, compSwap);
       break;  
       case 4:
-          quickSort(v100, length-1, compSwap);
-      break;             
+          quickSort(v100, length, compSwap);
+      break;  
+      case 5:
+          selectionSort(v100, length, compSwap);
+      break;                    
       default:
       break;
     }
@@ -270,8 +285,11 @@ void imgSort(int method, int length, int order, char *imgBuffer1, char *imgBuffe
           imgMergeSort(vetor, 0, length-1, compSwap);
       break;  
       case 4:
-          imgQuickSort(vetor, length-1, compSwap);
-      break;             
+          imgQuickSort(vetor, length, compSwap);
+      break;  
+      case 5:
+          imgSelectionSort(vetor, length, compSwap);
+      break;                      
       default:
       break;
     }
@@ -325,6 +343,65 @@ void bubbleSort(long int *array,long int length,long int *compSwap)
     }
 
 }
+
+void selectionSort(long int *array,long int length,long int *compSwap)
+{
+    long int i, j, min;//posição com o valor mínimo
+    int aux;
+    compSwap[0] = 0;
+    compSwap[1] = 0;
+
+    for (i = 0; i < length-1; i++)
+    {
+        min = i;
+        for (j = i + 1; j < length; j++)
+        {
+            compSwap[0]++;
+            if (array[j] < array[min]) 
+                min = j;
+        }
+
+        compSwap[0]++;
+        if (min != i)
+        {
+            compSwap[1]++;
+            aux = array[i];
+            array[i] = array[min];
+            array[min] = aux;
+        }
+    }
+
+}
+
+void imgSelectionSort(Img *array,int length,long int *compSwap)
+{
+    long int i, j, min;//posição com o valor mínimo
+    Img aux;
+    compSwap[0] = 0;
+    compSwap[1] = 0;
+
+    for (i = 0; i < length-1; i++)
+    {
+        min = i;
+        for (j = i + 1; j < length; j++)
+        {
+            compSwap[0]++;
+            if (array[j].id < array[min].id) 
+                min = j;
+        }
+
+        compSwap[0]++;
+        if (min != i)
+        {
+            compSwap[1]++;
+            aux = array[i];
+            array[i] = array[min];
+            array[min] = aux;
+        }
+    }
+
+}
+
 
 void imgInsertionSort(Img *array, int length ,long int *compSwap)
 {
@@ -668,6 +745,8 @@ void emptyFiles(long int method, int order)
     strcpy(orderMethod, "mergeSort");
   else if(method== 4)
     strcpy(orderMethod, "quickSort");      
+  else if(method== 5)
+    strcpy(orderMethod, "selectionSort");      
   else
     strcpy(orderMethod, "bubbleSort");
 
@@ -730,7 +809,9 @@ void createDataReport(long int length,long int method, int order, double cpu_tim
   else if(method == 3)
     strcpy(orderMethod, "mergeSort");
   else if(method== 4)
-    strcpy(orderMethod, "quickSort");      
+    strcpy(orderMethod, "quickSort"); 
+  else if(method== 5)
+    strcpy(orderMethod, "selectionSort");           
   else
     strcpy(orderMethod, "bubbleSort");
 
