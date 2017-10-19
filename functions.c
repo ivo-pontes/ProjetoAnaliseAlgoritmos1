@@ -13,7 +13,6 @@ void menu()
   scanf("%d",&order);
 
   printf("\n------------------MENU----------------------\n");
-  //printf("1 = Criar Todos os arquivos txt (100-1000000)\n");
   printf("1 = Algoritmo bubbleSort                     \n");
   printf("2 = Algoritmo InsertionSort                  \n");
   printf("3 = Algoritmo MergeSortSort                  \n");
@@ -87,11 +86,6 @@ void menu()
     break;
     case 7:
         //createAllFiles();
-        //openImages(1, order);//Método e Ordem
-        //openImages(2, order);
-        //openImages(3, order);
-        //openImages(4, order);
-        openImages(5, order);
     break;                     
   	default:
         op = 0;
@@ -153,175 +147,6 @@ void sort(long int length, long int metodo, int ordem)
   //  printArray(v100, length);
 }
 
-void openImages(method,order)
-{
-  FILE *fp;
-  char *imgBuffer1 = 0;
-  char *imgBuffer2 = 0;
-  long int lengths[2];
-  lengths[0] = 0;
-  lengths[1] = 0;
-
-  fp = fopen("BoatAT.png", "r");
-
-  if(fp == NULL)
-  {
-    printf("Erro ao abrir o arquivo.\n");
-  }else
-  {
-    fseek (fp, 0, SEEK_END);
-    lengths[0] = ftell (fp);
-    fseek (fp, 0, SEEK_SET);
-    imgBuffer1 = malloc (lengths[0]);
-    if (imgBuffer1)
-    {
-      fread (imgBuffer1, 1, lengths[0], fp);
-    }
-  }
-
-  fclose(fp);
-
-  fp = fopen("TheLichAT.png", "r");
-
-  if(fp == NULL)
-  {
-    printf("Erro ao abrir o arquivo.\n");
-  }else
-  { 
-    fseek (fp, 0, SEEK_END);
-    lengths[1] = ftell (fp);
-    fseek (fp, 0, SEEK_SET);
-    imgBuffer2 = malloc (lengths[1]);
-    if (imgBuffer2)
-    {
-      fread (imgBuffer2, 1, lengths[1], fp);
-    }
-  }
-
-  fclose(fp);
-
-  imgSort(method,100,order, imgBuffer1, imgBuffer2, lengths);
-  imgSort(method,1000,order, imgBuffer1, imgBuffer2, lengths);
-  imgSort(method,10000,order, imgBuffer1, imgBuffer2, lengths);
-  imgSort(method,100000,order, imgBuffer1, imgBuffer2, lengths);
-
-  //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
- 
-}
-
-
-void imgSort(int method, int length, int order, char *imgBuffer1, char *imgBuffer2,long int *size)
-{
-  Img vetor[length];
-  int i;
-  char tipoOrdem[100];
-
-  if(order == 2)
-    strcpy(tipoOrdem,"Decrescente");
-  else if(order == 1)
-    strcpy(tipoOrdem,"Randômica");
-  else
-    strcpy(tipoOrdem,"Crescente");
-
-  /*
-    Ordem Crescente
-  */
-  for(i = 0; i < length ; i++)
-  {
-    if(i%2 == 0)
-    {
-      vetor[i].data = malloc(size[0]);
-      vetor[i].data = imgBuffer1;
-      vetor[i].size = size[0];
-    }else
-    {
-      vetor[i].data = malloc(size[1]);
-      vetor[i].data = imgBuffer2;
-      vetor[i].size = size[1];
-    }
-
-    if(order != 1)//!Random
-      vetor[i].id = i;
-    else
-      vetor[i].id = rand() % (length);
-  }
-
-
-
-  /*
-    Ordem Decrescente
-  */
-  if(order == 2)
-  {
-    int j = 0;
-    for(i = length-1; i >= 0 ; i--)
-    {
-      vetor[j].id = i;
-      j++;
-      //printf("id: %ld, size: %ld.\n", vetor[j].id, vetor[i].size);
-    }
-  }
-
-
-
-
-  long int compSwap[2]; //Posição 0 - n de comparações, 1 - n de trocas
-
-  clock_t start, end;
-  double cpu_time_used;
-
-  start = clock();
-    switch (method)
-    {
-      case 1:
-          imgBubbleSort(vetor, length, compSwap);
-      break;
-      case 2:
-          imgInsertionSort(vetor, length, compSwap);
-      break;  
-      case 3:
-          compSwap[0] = 0;
-          compSwap[1] = 0;
-          imgMergeSort(vetor, 0, length-1, compSwap);
-      break;  
-      case 4:
-          imgQuickSort(vetor, length, compSwap);
-      break;  
-      case 5:
-          imgSelectionSort(vetor, length, compSwap);
-      break;                      
-      default:
-      break;
-    }
-  end = clock();
-  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-
-  printf("CPU Time, com %d posições(%s): %.2f.\n", length, tipoOrdem, cpu_time_used);
-  printf("Comparações: %ld.\nTrocas: %ld.\n", compSwap[0], compSwap[1]); 
-}
-
-void imgBubbleSort(Img *array,int length,long int *compSwap)
-{
-  compSwap[0] = 0;
-  compSwap[1] = 0;
-
-  Img aux;
-  long int i, j;
-
-  for( i = 0; i < length-1;  i++ )
-    for( j= i+1; j < length ; j++ )  
-    {
-      compSwap[0]++;
-      if( array[i].id > array[j].id )  
-      {          
-        aux = array[i];
-        array[i] = array[j];
-        array[j] = aux;
-        compSwap[1]++;
-      }
-    }
-}
-
 void bubbleSort(long int *array,long int length,long int *compSwap)
 {
   compSwap[0] = 0;
@@ -373,60 +198,6 @@ void selectionSort(long int *array,long int length,long int *compSwap)
 
 }
 
-void imgSelectionSort(Img *array,int length,long int *compSwap)
-{
-    long int i, j, min;//posição com o valor mínimo
-    Img aux;
-    compSwap[0] = 0;
-    compSwap[1] = 0;
-
-    for (i = 0; i < length-1; i++)
-    {
-        min = i;
-        for (j = i + 1; j < length; j++)
-        {
-            compSwap[0]++;
-            if (array[j].id < array[min].id) 
-                min = j;
-        }
-
-        compSwap[0]++;
-        if (min != i)
-        {
-            compSwap[1]++;
-            aux = array[i];
-            array[i] = array[min];
-            array[min] = aux;
-        }
-    }
-
-}
-
-
-void imgInsertionSort(Img *array, int length ,long int *compSwap)
-{
-  compSwap[0] = 0;
-  compSwap[1] = 0;
-
-  Img aux;
-  long int i, j;
-
-  for(j = 1; j < length; j++)
-  {
-    aux = array[j];
-    i = j-1;
-    
-    while( i >= 0 && array[i].id > aux.id)
-    {
-      array[i+1] = array[i];
-      i--;
-      compSwap[0]++;
-      compSwap[1]++;
-    }
-
-    array[i+1] = aux;
-  }
-}
 
 void insertionSort(long int *array, long int length ,long int *compSwap)
 {
@@ -450,75 +221,6 @@ void insertionSort(long int *array, long int length ,long int *compSwap)
 
     array[i+1] = aux;
   }
-}
-
-void imgMergeSort(Img *array,int start, int end, long int *compSwap)
-{
-  Img *aux;
-  int i,j,k,half;
-  
-  if ( start == end ) 
-    return;
-   
-   // ordenacao recursiva das duas metades
-   half = ( start+end )/2;
-   imgMergeSort( array, start, half, compSwap);
-   imgMergeSort( array, half+1,end, compSwap);
-
-   i = start;
-   j = half+1;
-   k = 0;
-   aux = (Img *) malloc(sizeof(Img) * (end-start+1));
-   
-   while( i<half+1 || j<end+1 )
-   { 
-      compSwap[0]++;
-
-      if ( i == half+1 )
-      { 
-         aux[k] = array[j];
-         j++;
-         k++;
-         compSwap[1]++;
-      } 
-      else
-      {
-        if (j==end+1) 
-        { 
-          aux[k] = array[i];
-          i++;
-        } 
-        else 
-        {
-          if (array[i].id < array[j].id) 
-          { 
-             aux[k] = array[i];
-             i++;
-          } 
-          else
-          { 
-            aux[k] = array[j];
-            j++;
-          }
-          compSwap[0]++;
-        }
-
-        k++;
-        compSwap[0]++;
-        compSwap[1]++;
-      }
-      
-      compSwap[0]++;
-   }
-
-   // copia vetor intercalado para o vetor original
-   for( i=start; i<=end; i++ )
-   {
-      compSwap[1]++;
-
-      array[i] = aux[i-start];
-   }
-   free(aux);
 }
 
 void mergeSort(long int *array,long int start,long int end, long int *compSwap)
@@ -589,35 +291,6 @@ void mergeSort(long int *array,long int start,long int end, long int *compSwap)
    }
    free(aux);
 }
-
-void imgQuickSort(Img *array,int length,long int *compSwap)
-{
-  compSwap[0] = 0;
-  compSwap[1] = 0;
-
-  Img aux;
-  long int i, j;
-
-  for (i = 1 ;i < length;i++) 
-  {
-    j = i;
- 
-    compSwap[0]++;
-    while (array[j].id < array[j-1].id) 
-    {
-      compSwap[1]++;
-      aux = array[j];
-      array[j]   = array[j-1];
-      array[j-1] = aux;
-      j--;
-    
-      if (j == 0) 
-       break;  
-    }
-  }
-}
-
-
 
 void quickSort(long int *array, long int length,long int *compSwap)
 {
@@ -900,57 +573,4 @@ void createFiles(long int n)
     fclose (fr);
   } 
 
-}
-
-
-
-
-
-/*
-  Função: printMakefile()
-  Utiliza as funções getString() e getStringN() com exemplo.
-*/
-void printMakeFile()
-{
-  char * string;
-
-  printf("Olá, qual seu nome?\n");
-  string = getString();
-  printf("Olá, %s, o arquivo compilado e executado usando makefile.\n", string);
-  free(string);//Após usar a função getString() e antes de usar novamente, liberar a memória.
-  printf("Digite outro nome.\n");
-  string = getStringN(100);
-  printf("String: %s, impressa com tamanho dinâmico.\n", string);
-  free(string);
-}
-
-/*
-  Função: getString()
-  Utiliza a função scanf() para pegar o "input" do usuário e limpar o buffer da
-  memória. Após retornar, deve-se liberar a memória da variável de mesmo nome(string)
-*/
-char * getString()
-{
-  char * string;
-  string = malloc(MAX_STR * sizeof(string));
-  scanf ("%[^\n]", string);
-  fflush(stdin);
-  __fpurge(stdin);
-  return string;
-}
-
-/*
-  Função: getStringN(length)
-  Utiliza a função scanf() para pegar o "input" do usuário e limpar o buffer da
-  memória. A diferença é que a memória é alocada de acordo com o parãmetro passado.
-  Após retornar, deve-se liberar a memória da variável de mesmo nome(string)
-*/
-char * getStringN(int length)
-{
-  char * string;
-  string = malloc(length * sizeof(string));
-  scanf ("%[^\n]", string);
-  fflush(stdin);
-  __fpurge(stdin);
-  return string;
 }
