@@ -9,7 +9,6 @@ void menu()
   int op = -1;
   int order = 0; 
 
-
   printf("Digite o tipo de Ordenação: 0-Crescente | 1-Randômica | 2-Decrescente\n");
   scanf("%d",&order);
 
@@ -77,7 +76,10 @@ void menu()
     break;     
     case 6:
         //createAllFiles();
-        openImages();
+        //openImages(1, order);//Método e Ordem
+        //openImages(2, order);
+        //openImages(3, order);
+        openImages(4, order);
     break;                
   	default:
         op = 0;
@@ -136,15 +138,14 @@ void sort(long int length, long int metodo, int ordem)
   //  printArray(v100, length);
 }
 
-void openImages()
+void openImages(method,order)
 {
-  Img vetor[MAX_IMG];
-  int i;  
   FILE *fp;
   char *imgBuffer1 = 0;
   char *imgBuffer2 = 0;
-  long int length1 = 0;
-  long int length2 = 0;
+  long int lengths[2];
+  lengths[0] = 0;
+  lengths[1] = 0;
 
   fp = fopen("BoatAT.png", "r");
 
@@ -154,12 +155,12 @@ void openImages()
   }else
   {
     fseek (fp, 0, SEEK_END);
-    length1 = ftell (fp);
+    lengths[0] = ftell (fp);
     fseek (fp, 0, SEEK_SET);
-    imgBuffer1 = malloc (length1);
+    imgBuffer1 = malloc (lengths[0]);
     if (imgBuffer1)
     {
-      fread (imgBuffer1, 1, length1, fp);
+      fread (imgBuffer1, 1, lengths[0], fp);
     }
   }
 
@@ -171,64 +172,81 @@ void openImages()
   {
     printf("Erro ao abrir o arquivo.\n");
   }else
-  {
+  { 
     fseek (fp, 0, SEEK_END);
-    length2 = ftell (fp);
+    lengths[1] = ftell (fp);
     fseek (fp, 0, SEEK_SET);
-    imgBuffer2 = malloc (length2);
+    imgBuffer2 = malloc (lengths[1]);
     if (imgBuffer2)
     {
-      fread (imgBuffer2, 1, length2, fp);
+      fread (imgBuffer2, 1, lengths[1], fp);
     }
   }
 
   fclose(fp);
 
+  imgSort(method,100,order, imgBuffer1, imgBuffer2, lengths);
+  imgSort(method,1000,order, imgBuffer1, imgBuffer2, lengths);
+  imgSort(method,10000,order, imgBuffer1, imgBuffer2, lengths);
+  imgSort(method,100000,order, imgBuffer1, imgBuffer2, lengths);
+
+  //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
+ 
+}
+
+
+void imgSort(int method, int length, int order, char *imgBuffer1, char *imgBuffer2,long int *size)
+{
+  Img vetor[length];
+  int i;
+  char tipoOrdem[100];
+
+  if(order == 2)
+    strcpy(tipoOrdem,"Decrescente");
+  else if(order == 1)
+    strcpy(tipoOrdem,"Randômica");
+  else
+    strcpy(tipoOrdem,"Crescente");
+
   /*
     Ordem Crescente
   */
-  for(i = 0; i < MAX_IMG ; i++)
+  for(i = 0; i < length ; i++)
   {
     if(i%2 == 0)
     {
-      vetor[i].data = malloc(length1);
+      vetor[i].data = malloc(size[0]);
       vetor[i].data = imgBuffer1;
-      vetor[i].size = length1;
+      vetor[i].size = size[0];
     }else
     {
-      vetor[i].data = malloc(length2);
+      vetor[i].data = malloc(size[1]);
       vetor[i].data = imgBuffer2;
-      vetor[i].size = length2;
+      vetor[i].size = size[1];
     }
 
-    vetor[i].id = i;
-    //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
+    if(order != 1)//!Random
+      vetor[i].id = i;
+    else
+      vetor[i].id = rand() % (length);
   }
-
-
 
 
 
   /*
     Ordem Decrescente
   */
-  int j = 0;
-  for(i = MAX_IMG-1; i >= 0 ; i--)
+  if(order == 2)
   {
-    vetor[j].id = i;
-    j++;
-    //printf("id: %ld, size: %ld.\n", vetor[i].id, vetor[i].size);
+    int j = 0;
+    for(i = length-1; i >= 0 ; i--)
+    {
+      vetor[j].id = i;
+      j++;
+      //printf("id: %ld, size: %ld.\n", vetor[j].id, vetor[i].size);
+    }
   }
 
-  int ordem = 2;
-  char tipoOrdem[100];
-
-  if(ordem == 2)
-    strcpy(tipoOrdem,"Decrescente");
-  else if(ordem == 1)
-    strcpy(tipoOrdem,"Randômica");
-  else
-    strcpy(tipoOrdem,"Crescente");
 
 
 
@@ -238,27 +256,32 @@ void openImages()
   double cpu_time_used;
 
   start = clock();
-  imgBubbleSort(vetor, MAX_IMG, compSwap);
+    switch (method)
+    {
+      case 1:
+          imgBubbleSort(vetor, length, compSwap);
+      break;
+      case 2:
+          imgInsertionSort(vetor, length, compSwap);
+      break;  
+      case 3:
+          compSwap[0] = 0;
+          compSwap[1] = 0;
+          imgMergeSort(vetor, 0, length-1, compSwap);
+      break;  
+      case 4:
+          imgQuickSort(vetor, length-1, compSwap);
+      break;             
+      default:
+      break;
+    }
   end = clock();
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
-  printf("CPU Time, com %d posições(%s): %.2f.\n", MAX_IMG, tipoOrdem, cpu_time_used);
+  printf("CPU Time, com %d posições(%s): %.2f.\n", length, tipoOrdem, cpu_time_used);
   printf("Comparações: %ld.\nTrocas: %ld.\n", compSwap[0], compSwap[1]); 
-
-/*  bubbleSort();
-  bubbleSort();
-  bubbleSort();
-*/
-
-
 }
 
-/*
-void imgSort()
-{
-
-}
-*/
 void imgBubbleSort(Img *array,int length,long int *compSwap)
 {
   compSwap[0] = 0;
@@ -303,6 +326,30 @@ void bubbleSort(long int *array,long int length,long int *compSwap)
 
 }
 
+void imgInsertionSort(Img *array, int length ,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  Img aux;
+  long int i, j;
+
+  for(j = 1; j < length; j++)
+  {
+    aux = array[j];
+    i = j-1;
+    
+    while( i >= 0 && array[i].id > aux.id)
+    {
+      array[i+1] = array[i];
+      i--;
+      compSwap[0]++;
+      compSwap[1]++;
+    }
+
+    array[i+1] = aux;
+  }
+}
 
 void insertionSort(long int *array, long int length ,long int *compSwap)
 {
@@ -326,6 +373,75 @@ void insertionSort(long int *array, long int length ,long int *compSwap)
 
     array[i+1] = aux;
   }
+}
+
+void imgMergeSort(Img *array,int start, int end, long int *compSwap)
+{
+  Img *aux;
+  int i,j,k,half;
+  
+  if ( start == end ) 
+    return;
+   
+   // ordenacao recursiva das duas metades
+   half = ( start+end )/2;
+   imgMergeSort( array, start, half, compSwap);
+   imgMergeSort( array, half+1,end, compSwap);
+
+   i = start;
+   j = half+1;
+   k = 0;
+   aux = (Img *) malloc(sizeof(Img) * (end-start+1));
+   
+   while( i<half+1 || j<end+1 )
+   { 
+      compSwap[0]++;
+
+      if ( i == half+1 )
+      { 
+         aux[k] = array[j];
+         j++;
+         k++;
+         compSwap[1]++;
+      } 
+      else
+      {
+        if (j==end+1) 
+        { 
+          aux[k] = array[i];
+          i++;
+        } 
+        else 
+        {
+          if (array[i].id < array[j].id) 
+          { 
+             aux[k] = array[i];
+             i++;
+          } 
+          else
+          { 
+            aux[k] = array[j];
+            j++;
+          }
+          compSwap[0]++;
+        }
+
+        k++;
+        compSwap[0]++;
+        compSwap[1]++;
+      }
+      
+      compSwap[0]++;
+   }
+
+   // copia vetor intercalado para o vetor original
+   for( i=start; i<=end; i++ )
+   {
+      compSwap[1]++;
+
+      array[i] = aux[i-start];
+   }
+   free(aux);
 }
 
 void mergeSort(long int *array,long int start,long int end, long int *compSwap)
@@ -397,6 +513,35 @@ void mergeSort(long int *array,long int start,long int end, long int *compSwap)
    free(aux);
 }
 
+void imgQuickSort(Img *array,int length,long int *compSwap)
+{
+  compSwap[0] = 0;
+  compSwap[1] = 0;
+
+  Img aux;
+  long int i, j;
+
+  for (i = 1 ;i < length;i++) 
+  {
+    j = i;
+ 
+    compSwap[0]++;
+    while (array[j].id < array[j-1].id) 
+    {
+      compSwap[1]++;
+      aux = array[j];
+      array[j]   = array[j-1];
+      array[j-1] = aux;
+      j--;
+    
+      if (j == 0) 
+       break;  
+    }
+  }
+}
+
+
+
 void quickSort(long int *array, long int length,long int *compSwap)
 {
   compSwap[0] = 0;
@@ -407,10 +552,10 @@ void quickSort(long int *array, long int length,long int *compSwap)
   for (i = 1 ;i < length;i++) 
   {
     j = i;
- 
+    
+    compSwap[0]++;
     while (array[j] < array[j-1]) 
     {
-      compSwap[0]++;
       compSwap[1]++;
       aux = array[j];
       array[j]   = array[j-1];
