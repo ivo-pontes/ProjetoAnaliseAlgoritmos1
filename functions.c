@@ -129,7 +129,9 @@ void sort(long int length, long int metodo, int ordem)
           mergeSort(v100, 0, length-1, compSwap);
       break;  
       case 4:
-          quickSort(v100, length, compSwap);
+          compSwap[0] = 0;
+          compSwap[1] = 0;
+          quickSort(v100, 0, length-1, compSwap);
       break;  
       case 5:
           selectionSort(v100, length, compSwap);
@@ -166,7 +168,6 @@ void bubbleSort(long int *array,long int length,long int *compSwap)
         compSwap[1]++;
       }
     }
-
 }
 
 void selectionSort(long int *array,long int length,long int *compSwap)
@@ -195,7 +196,6 @@ void selectionSort(long int *array,long int length,long int *compSwap)
             array[min] = aux;
         }
     }
-
 }
 
 
@@ -282,7 +282,6 @@ void mergeSort(long int *array,long int start,long int end, long int *compSwap)
       compSwap[0]++;
    }
 
-   // copia vetor intercalado para o vetor original
    for( i=start; i<=end; i++ )
    {
       compSwap[1]++;
@@ -292,32 +291,76 @@ void mergeSort(long int *array,long int start,long int end, long int *compSwap)
    free(aux);
 }
 
-void quickSort(long int *array, long int length,long int *compSwap)
+void quickSort(long int *array,long int start,long int end, long int *compSwap)
 {
-  compSwap[0] = 0;
-  compSwap[1] = 0;
+  long int i, j = 0, aux[end];
+  aux[j++] = start;
+  aux[j++] = end;
 
-  long int i, j, aux;
-
-  for (i = 1 ;i < length;i++) 
+  while( j > 0)
   {
-    j = i;
+    end = aux[--j];
+    start = aux[--j];
+
+    if (start >= end) 
+      continue;
+    
+    i = partition(array, start, end, compSwap);
     
     compSwap[0]++;
-    while (array[j] < array[j-1]) 
+    compSwap[1]++;
+    if (i - start > end - i)
     {
-      compSwap[1]++;
-      aux = array[j];
-      array[j]   = array[j-1];
-      array[j-1] = aux;
-      j--;
-    
-      if (j == 0) 
-       break;  
+      aux[j++] = start; 
+      aux[j++] = i - 1;
+      aux[j++] = i + 1; 
+      aux[j++] = end;
+    }
+    else 
+    {
+      aux[j++] = i + 1; 
+      aux[j++] = end;
+      aux[j++] = start; 
+      aux[j++] = i - 1;
     }
   }
 }
 
+long int partition(long int *array,long int start,long int end, long int *compSwap )
+{
+  long int x,i,j,aux;
+  x = array[start];
+  i = start - 1;
+  j = end + 1;
+   
+  while(1)
+  {
+    do
+    { 
+      compSwap[0]++;
+      j--; 
+    }while( array[j]>x );
+    
+    do 
+    { 
+      compSwap[0]++;
+      i++; 
+    }while( array[i]<x );
+    
+    compSwap[0]++;
+    if (i<j) 
+    {
+      compSwap[1]++;
+      aux = array[i];
+      array[i] = array[j];
+      array[j] = aux;
+    }
+    else
+    {
+       return j;
+    }
+  }
+}
 
 void openFiles(long int *array,long int length, int orderType)
 {

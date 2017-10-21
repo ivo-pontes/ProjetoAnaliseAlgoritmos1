@@ -19,7 +19,7 @@ void menu();
 void bubbleSort(long int *,long int, long int *);
 void insertionSort(long int *, long int, long int * );
 void mergeSort( long int *,long int, long int, long int * );
-void quickSort( long int *, long int, long int * );
 void selectionSort(long int *,long int,long int *);
-
+long int partition(long int *,long int,long int, long int *);
+void quickSort(long int *,long int,long int, long int *);
 #endif
